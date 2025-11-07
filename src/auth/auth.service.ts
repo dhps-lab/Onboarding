@@ -1,4 +1,4 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { LoginDto } from './dto/login.dto';
 
@@ -7,11 +7,13 @@ export class AuthService {
   constructor(private readonly jwtService: JwtService) {}
 
   login(dto: LoginDto) {
-    const { username, password } = dto;
+    const { username } = dto;
 
+    // Condition check with database or referral authentication
+    /*
     if (username !== 'admin' && password !== 'admin') {
       throw new UnauthorizedException('Invalid credentials');
-    }
+    }*/
     const payload = { username };
     const token = this.jwtService.sign(payload);
     return {
