@@ -9,11 +9,11 @@ export default function LoginPage() {
 
   const handleLogin = async () => {
     try {
-      const { data } = await axios.post("http://localhost:3000/auth/login", {
-        user,
+      const { data } = await axios.post("http://localhost:3000/api/auth/login", {
+        username:   user,
         password,
       });
-      localStorage.setItem("token", data.token);
+      localStorage.setItem("token", data.access_token);
       window.location.href = "/products";
     } catch {
       setError("Credenciales incorrectas");
