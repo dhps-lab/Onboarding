@@ -1,36 +1,129 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 💻 Frontend — Onboarding App
 
-## Getting Started
+Aplicación web desarrollada con **Next.js 14 + TypeScript** que simula el flujo de registro (onboarding) de nuevos clientes para un banco digital.  
+Incluye autenticación, listado de productos y un formulario protegido de apertura de cuenta.
 
-First, run the development server:
+---
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+## ⚙️ Tecnologías
+
+| Tecnología | Descripción |
+|-------------|--------------|
+| **Next.js 14** | Framework React moderno |
+| **TypeScript** | Tipado estático |
+| **Tailwind CSS** | Estilos rápidos y responsivos |
+| **Axios / Fetch API** | Comunicación con backend |
+| **JWT** | Autenticación basada en token |
+| **Docker** | Empaquetado del servicio |
+
+---
+
+## 🏗️ Estructura del Proyecto
+
+```
+frontend/
+├── public/
+├── src/
+│   ├── app/
+│   │   ├── page.tsx           # Login
+│   │   ├── products/page.tsx  # Listado de productos
+│   │   ├── onboarding/page.tsx# Formulario onboarding
+│   │   └── layout.tsx
+│   ├── components/            # Componentes reutilizables
+│   ├── lib/api.ts             # Llamadas al backend
+│   └── styles/                # Estilos globales
+├── package.json
+└── Dockerfile
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 🚀 Ejecución
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### 🧩 Con Docker Compose
+Desde la raíz del proyecto:
 
-## Learn More
+```bash
+docker compose up --build
+```
 
-To learn more about Next.js, take a look at the following resources:
+Frontend disponible en:  
+👉 [http://localhost:3001](http://localhost:3001)
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+---
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### 💻 Localmente
+```bash
+cd frontend
+npm install
+npm run dev
+```
 
-## Deploy on Vercel
+---
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## 🔐 Flujo Principal
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+1. **Login**
+   - Envía credenciales ficticias al backend (`/auth/login`).
+   - Guarda el token JWT en `localStorage`.
+
+2. **Listado de Productos**
+   - Consume `/products` del backend.
+   - Muestra información simulada.
+
+3. **Onboarding**
+   - Formulario protegido que requiere JWT.
+   - Envía nombre, documento, email y monto inicial.
+   - Muestra el estado devuelto `{ onboardingId, status }`.
+
+---
+
+## 🧱 Variables de Entorno
+
+| Variable | Descripción |
+|-----------|-------------|
+| `NEXT_PUBLIC_API_URL` | URL base del backend NestJS |
+
+Ejemplo:
+```
+NEXT_PUBLIC_API_URL=http://localhost:3000
+```
+
+---
+
+## 🐳 Dockerfile
+
+```dockerfile
+FROM node:20-alpine AS builder
+WORKDIR /app
+COPY package*.json ./
+RUN npm install
+COPY . .
+RUN npm run build
+
+FROM node:20-alpine AS runner
+WORKDIR /app
+ENV NODE_ENV production
+COPY --from=builder /app/package*.json ./
+COPY --from=builder /app/node_modules ./node_modules
+COPY --from=builder /app/.next ./.next
+COPY --from=builder /app/public ./public
+EXPOSE 3000
+CMD ["npm", "start"]
+```
+
+---
+
+## 🌟 Posibles Mejoras
+
+- Integrar React Query o Zustand.
+- Validaciones con Zod o Yup.
+- Mejorar la interfaz con un wizard de pasos.
+- Añadir tests con Jest y Playwright.
+
+---
+
+## 👨‍💻 Autor
+**Duvan Humberto Prieto Suarez**  
+Senior Software Engineer  
+[GitHub](https://github.com/) · [LinkedIn](https://linkedin.com/)
