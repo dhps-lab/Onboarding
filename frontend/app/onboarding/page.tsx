@@ -15,7 +15,7 @@ export default function OnboardingPage() {
     const token = localStorage.getItem("token");
     console.log(form);
     try {
-      const { data } = await axios.post("http://localhost:3000/api/onboarding", {...form, initialAmount: (+form.initialAmount)}, {
+      const { data } = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/onboarding`, {...form, initialAmount: (+form.initialAmount)}, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setResult(data);

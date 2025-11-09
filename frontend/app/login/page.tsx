@@ -1,20 +1,23 @@
 "use client";
 import { useState } from "react";
 import axios from "axios";
+import { useRouter } from "next/router";
 
 export default function LoginPage() {
   const [user, setUser] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const router = useRouter();
+
 
   const handleLogin = async () => {
     try {
-      const { data } = await axios.post("http://localhost:3000/api/auth/login", {
+      const { data } = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/auth/login`, {
         username:   user,
         password,
       });
       localStorage.setItem("token", data.access_token);
-      window.location.href = "/products";
+      router.push("/products");
     } catch {
       setError("Credenciales incorrectas");
     }

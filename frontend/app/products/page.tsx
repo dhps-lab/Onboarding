@@ -1,12 +1,15 @@
 "use client";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { useRouter } from "next/router";
 
 export default function ProductsPage() {
   const [products, setProducts] = useState<any[]>([]);
+  const router = useRouter();
+
 
   useEffect(() => {
-    axios.get("http://localhost:3000/api/products").then((res) => setProducts(res.data));
+    axios.get(`${process.env.NEXT_PUBLIC_API_URL}/products`).then((res) => setProducts(res.data));
   }, []);
 
   return (
@@ -21,7 +24,7 @@ export default function ProductsPage() {
       </ul>
       <button
         className="mt-4"
-        onClick={() => (window.location.href = "/onboarding")}
+        onClick={() => (router.push("/onboarding"))}
       >
         Abrir cuenta
       </button>
