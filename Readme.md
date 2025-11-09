@@ -110,6 +110,28 @@ Comunicación con el backend vía **Axios / Fetch API**.
 
 Más detalles: [frontend/README.md](frontend/README.md)
 
+## 🧱 Backend  
+El backend se desarrolló con **NestJS** e incluye los siguientes módulos:
+
+- **Auth:** endpoint `POST /auth/login` que recibe credenciales ficticias y devuelve un **JWT válido por 5 minutos**.  
+- **Products:** endpoints `GET /products` y `GET /products/:id` que retornan un listado simulado de productos o un producto individual.  
+- **Onboarding:** endpoint protegido `POST /onboarding` que recibe nombre, documento, email y monto inicial.  
+  - Valida los datos con **class-validator**.  
+  - Guarda la información en memoria con estado `"REQUESTED"`.  
+  - Devuelve `{ onboardingId, status }`.  
+- **Health:** endpoint `GET /health` que retorna `{ ok: true }`.  
+
+🧩 Tecnologías principales:
+- NestJS con TypeScript  
+- JWT (jsonwebtoken)  
+- class-validator para validaciones  
+- Simulación de base de datos en memoria  
+- Caching de peticiones
+- Integración y despliegue mediante Docker  
+
+Más detalles: [`backend/README.md`](backend/README.md)
+
+
 ## ⚒️ Scripts Comunes
 **Backend**
 ```bash
